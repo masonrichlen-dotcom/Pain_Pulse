@@ -367,13 +367,18 @@ export default function App() {
   function toggleDictation() {
     if (listening) { recRef.current?.stop(); setListening(false); return; }
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-    const rec = new SR();
-    rec.continuous = false; rec.interimResults = true; rec.lang = "en-US";
-    rec.onresult = e => setInput(Array.from(e.results).map(r => r[0].transcript).join(""));
-    rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
-    recRef.current = rec; rec.start(); setListening(true);
+    if (!SR) { alert("Dictation not supported in this browser. Try Chrome or Safari."); return; }
+    navigator.mediaDevices?.getUserMedia({ audio: true })
+      .then(stream => {
+        stream.getTracks().forEach(t => t.stop());
+        const rec = new SR();
+        rec.continuous = false; rec.interimResults = true; rec.lang = "en-US";
+        rec.onresult = e => setInput(Array.from(e.results).map(r => r[0].transcript).join(""));
+        rec.onend = () => setListening(false);
+        rec.onerror = () => setListening(false);
+        recRef.current = rec; rec.start(); setListening(true);
+      })
+      .catch(() => alert("Microphone access denied. Allow mic access in browser settings and try again."));
   }
 
   // ─── STYLES ────────────────────────────────────────────────────────────────
