@@ -1,7 +1,8 @@
 {
-  "name": "pain-pulse-api",
-  "version": "1.0.0",
-  "engines": {
-    "node": "18.x"
+  "version": 2,
+  "functions": {
+    "api/chat.js": {
+      "runtime": "nodejs18.x"
+    }
   }
 }
