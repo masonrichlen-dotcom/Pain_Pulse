@@ -139,8 +139,8 @@ function useTimer() {
 async function callClaude(messages, onChunk) {
   // Routes through /api/chat — keeps the API key server-side.
   // In local development, CRA proxies this to localhost:3001 (or Vercel dev).
-  const res = await fetch("/api/chat", {
-    method: "POST",
+const res = await fetch("https://pain-pulse-git-main-mason-s-projects13.vercel.app/api/chat", {
+  method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, system: SYSTEM_PROMPT, messages }),
   });
